@@ -1,14 +1,16 @@
 package org.example;
 
 import java.sql.*;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class DatabaseConnectionTest {
     public static void main(String[] args) {
 
-        // TODO: move to .env
-        String url = "jdbc:postgresql://localhost:5432/mydatabase";
-        String user = "myuser";
-        String password = "passw0rd";
+        Dotenv dotenv = Dotenv.load();
+
+        String url = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":5432/mydatabase";
+        String user = dotenv.get("DB_USER");
+        String password = dotenv.get("DB_PASSWORD");
 
         Connection connection = null;
 
@@ -31,6 +33,7 @@ public class DatabaseConnectionTest {
             }
 
         } catch (SQLException e) {
+            System.out.println(System.getenv("DB_HOST"));
             System.out.println("SQL Exception occurred: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println("Driver not found: " + e.getMessage());
