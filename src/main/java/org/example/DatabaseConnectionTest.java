@@ -1,7 +1,11 @@
 package org.example;
 
 import java.sql.*;
+import java.util.List;
+
+import controller.ProfileController;
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Profile;
 
 public class DatabaseConnectionTest {
     public static void main(String[] args) {
@@ -21,15 +25,11 @@ public class DatabaseConnectionTest {
             // Establish connection
             connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
-            Statement statement = null;
 
-            statement = connection.createStatement();
-
-            ResultSet result = statement.executeQuery(
-                    "SELECT * FROM profile"
-            );
-            while (result.next()) {
-                System.out.println(result.getInt("id") + "\t" + result.getString("name") + "\t" + result.getString("email"));
+            ProfileController profileController = new ProfileController(connection);
+            List<Profile> profiles = profileController.listProfiles();
+            for (int i = 0; i < profiles.toArray().length; i++) {
+                System.out.println(profiles.get(i).getUsername());
             }
 
         } catch (SQLException e) {
