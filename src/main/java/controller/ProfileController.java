@@ -1,6 +1,7 @@
 package controller;
 
 import model.Profile;
+import model.User;
 import service.ProfileService;
 
 import java.sql.Connection;
@@ -24,18 +25,26 @@ public class ProfileController {
         }
     }
 
-    public Profile getProfile(int id) {
+    public Profile getProfile(String username) {
         try {
-            return profileService.getProfile(id);
+            return profileService.getProfile(username);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public void createProfile(Profile profile) {
+    public void createProfile(User user, Profile profile) {
         try {
-            profileService.createProfile(profile);
+            profileService.createProfile(user, profile);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createProfile(User user) {
+        try {
+            profileService.createProfile(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }

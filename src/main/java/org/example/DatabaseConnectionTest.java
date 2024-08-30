@@ -1,20 +1,27 @@
 package org.example;
 
-import java.sql.*;
-import java.util.List;
-
 import controller.ProfileController;
-import io.github.cdimascio.dotenv.Dotenv;
 import model.Profile;
+import model.User;
+import session.Session;
+import view.MainView;
+
+import java.sql.*;
+import java.util.Objects;
+import java.util.Scanner;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
+import javax.swing.*;
 
 public class DatabaseConnectionTest {
     public static void main(String[] args) {
 
         Dotenv dotenv = Dotenv.load();
 
-        String url = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":5432/mydatabase";
-        String user = dotenv.get("DB_USER");
-        String password = dotenv.get("DB_PASSWORD");
+        String envURL = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":5432/mydatabase";
+        String envUser = dotenv.get("DB_USER");
+        String envPassword = dotenv.get("DB_PASSWORD");
 
         Connection connection = null;
 
@@ -23,28 +30,62 @@ public class DatabaseConnectionTest {
             Class.forName("org.postgresql.Driver");
 
             // Establish connection
-            connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connection successful!");
+            connection = DriverManager.getConnection(envURL, envUser, envPassword);
+//            System.out.println("Connection successful!");
 
-            ProfileController profileController = new ProfileController(connection);
-            List<Profile> profiles = profileController.listProfiles();
-            for (int i = 0; i < profiles.toArray().length; i++) {
-                System.out.println(profiles.get(i).getUsername());
+            Scanner scanner = new Scanner(System.in); // Scanner
+            User user = Session.getInstance().getLoggedInUser(); // Session instance
+            ProfileController profileController = new ProfileController(connection); // Profile controller instance
+
+            // Starting point of the application
+
+            if (user != null) {
+                System.out.printf("Welcome %s", user.getUsername());
+            } else {
+                System.out.println("Welcome, please log in");
+
+                System.out.println("Enter username: ");
+                String username = scanner.nextLine();
+                System.out.println("Enter password: ");
+                String password = scanner.nextLine();
+
+                Profile profile = profileController.getProfile(username);
+                if (profile != null) {
+                    if (Objects.equals(profile.getPassword(), password)) {
+                        User loggedInUser = new User(profile.getUsername(), profile.getPassword(), profile.getEmail());
+                        Session.getInstance().setLoggedInUser(loggedInUser);
+
+                        System.out.printf("Welcome %s\n", loggedInUser.getUsername());
+                        System.out.println("You are now logged in");
+                    }
+                }
+                else {
+                    System.out.println("Wrong username or password");
+                }
+
+                SwingUtilities.invokeLater(() -> { new MainView(profileController);});
+
             }
+
+//            List<Profile> profiles = profileController.listProfiles();
+//            for (int i = 0; i < profiles.toArray().length; i++) {
+//                System.out.println(profiles.get(i).getUsername() + "\t" + profiles.get(i).getEmail());
+//            }
 
         } catch (SQLException e) {
             System.out.println(System.getenv("DB_HOST"));
             System.out.println("SQL Exception occurred: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println("Driver not found: " + e.getMessage());
-        } finally {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
         }
-        }
+//        finally {
+//        if (connection != null) {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                System.out.println(e);
+//            }
+//        }
+//        }
     }
 }

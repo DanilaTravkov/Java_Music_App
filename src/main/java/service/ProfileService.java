@@ -1,6 +1,7 @@
 package service;
 
 import model.Profile;
+import model.User;
 import repository.ProfileRepository;
 
 import java.sql.Connection;
@@ -19,12 +20,16 @@ public class ProfileService {
         return profileRepository.list();
     }
 
-    public Profile getProfile(int id) throws SQLException {
-        return profileRepository.get(id);
+    public Profile getProfile(String username) throws SQLException {
+        return profileRepository.get(username);
     }
 
-    public void createProfile(Profile profile) throws SQLException {
-        profileRepository.create(profile);
+    public void createProfile(User user, Profile profile) throws SQLException {
+        profileRepository.create(user, profile);
+    }
+
+    public void createProfile(User user) throws SQLException {
+        profileRepository.create(user);
     }
 
     public void updateProfile(Profile profile) throws SQLException {

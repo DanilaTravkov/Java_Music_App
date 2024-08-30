@@ -11,12 +11,14 @@ public class Profile extends User {
     @Id
     private int id;
 
+    @Column(name = "name")
+    private String name;
+    @Column(name = "surname")
+    private String surname;
     @Column(name = "phone")
     private String phone;
-
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
-
     @Column(name = "gender")
     private Gender gender;
 
@@ -41,11 +43,11 @@ public class Profile extends User {
         this.phone = phone;
     }
 
-    public Date getDate_of_birth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDate_of_birth(Date date_of_birth) {
+    public void setDateOfBirth(Date date_of_birth) {
         this.dateOfBirth = date_of_birth;
     }
 
@@ -55,5 +57,21 @@ public class Profile extends User {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }
