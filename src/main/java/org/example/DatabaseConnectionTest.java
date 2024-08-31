@@ -4,13 +4,13 @@ import controller.ProfileController;
 import model.Profile;
 import model.User;
 import session.Session;
-import view.MainView;
 
 import java.sql.*;
 import java.util.Objects;
 import java.util.Scanner;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import view.MainView;
 
 import javax.swing.*;
 
