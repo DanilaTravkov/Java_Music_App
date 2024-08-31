@@ -32,11 +32,15 @@ public class ProfileService {
         profileRepository.create(user);
     }
 
-    public void updateProfile(Profile profile) throws SQLException {
-        profileRepository.update(profile);
+    public void updateUser(User user, String username) throws SQLException {
+        profileRepository.updateUser(user, username);
     }
 
-    public void deleteProfile(int id) throws SQLException {
-        profileRepository.delete(id);
+    public void updateProfile(Profile profile, String username) throws SQLException {
+        profileRepository.updateProfile(profile, username);
+    }
+
+    public void deleteProfile(String username) throws SQLException {
+        profileRepository.delete(username);
     }
 }

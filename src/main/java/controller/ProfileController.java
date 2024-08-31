@@ -50,17 +50,25 @@ public class ProfileController {
         }
     }
 
-    public void updateProfile(Profile profile) {
+    public void updateUser(User user, String username) {
         try {
-            profileService.updateProfile(profile);
+            profileService.updateUser(user, username);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteProfile(int id) {
+    public void updateProfile(Profile profile, String username) {
         try {
-            profileService.deleteProfile(id);
+            profileService.updateProfile(profile, username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProfile(String username) {
+        try {
+            profileService.deleteProfile(username);
         } catch (SQLException e) {
             e.printStackTrace();
         }

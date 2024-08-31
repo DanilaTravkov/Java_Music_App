@@ -31,7 +31,7 @@ public class DatabaseConnectionTest {
 
             // Establish connection
             connection = DriverManager.getConnection(envURL, envUser, envPassword);
-//            System.out.println("Connection successful!");
+            System.out.println("Connection successful!");
 
             Scanner scanner = new Scanner(System.in); // Scanner
             User user = Session.getInstance().getLoggedInUser(); // Session instance
@@ -45,25 +45,46 @@ public class DatabaseConnectionTest {
                 System.out.println("Welcome, please log in");
 
                 System.out.println("Enter username: ");
-                String username = scanner.nextLine();
+                String loginUsername = scanner.nextLine();
                 System.out.println("Enter password: ");
-                String password = scanner.nextLine();
+                String loginPassword = scanner.nextLine();
 
-                Profile profile = profileController.getProfile(username);
+                Profile profile = profileController.getProfile(loginUsername);
                 if (profile != null) {
-                    if (Objects.equals(profile.getPassword(), password)) {
+                    if (Objects.equals(profile.getPassword(), loginPassword)) {
                         User loggedInUser = new User(profile.getUsername(), profile.getPassword(), profile.getEmail());
                         Session.getInstance().setLoggedInUser(loggedInUser);
 
                         System.out.printf("Welcome %s\n", loggedInUser.getUsername());
                         System.out.println("You are now logged in");
+
+                        System.out.println("Confirm to delete user y/n: ");
+                        String answer = scanner.nextLine();
+                        if (Objects.equals(answer, "y")) {
+                            profileController.deleteProfile(Session.getInstance().getLoggedInUser().getUsername());
+                        } else if (Objects.equals(answer, "n")) {
+                            System.out.println("Aborted");
+                        }
+
+//                        System.out.println("Enter updated username: ");
+//                        String updatedUsername = scanner.nextLine();
+//                        System.out.println("Enter updated email: ");
+//                        String updatedEmail = scanner.nextLine();
+//
+//                        User updatedUser = new User(updatedUsername, null, updatedEmail);
+//
+//                        profileController.updateUser(updatedUser, Session.getInstance().getLoggedInUser().getUsername());
+//                        System.out.println("User updated successfully");
+
                     }
                 }
                 else {
                     System.out.println("Wrong username or password");
                 }
 
-                SwingUtilities.invokeLater(() -> { new MainView(profileController);});
+
+
+//                SwingUtilities.invokeLater(() -> { new MainView(profileController);});
 
             }
 

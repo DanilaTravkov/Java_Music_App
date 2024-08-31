@@ -115,21 +115,60 @@ public class ProfileRepository {
     }
 
 
-    public void update(Profile profile) throws SQLException {
-        String sql = "UPDATE profile SET name = ?, email = ? WHERE id = ?";
+    public void updateUser(User user, String username) throws SQLException {
+        String sql = "UPDATE \"User\" SET username = ?, email = ? WHERE username = ? RETURNING id";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-//            stmt.setString(1, profile.getName());
-//            stmt.setString(2, profile.getEmail());
-//            stmt.setInt(3, profile.getId());
-//            stmt.executeUpdate();
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int userId = rs.getInt(1);
+                // You might want to use this ID for further operations or validation
+            }
         }
     }
 
-    public void delete(int id) throws SQLException {
-        String sql = "DELETE FROM profile WHERE id = ?";
+    public void updateProfile(Profile profile, String username) throws SQLException {
+        String sql = "UPDATE profile SET name = ?, phone = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setString(1, profile.getName());
+            stmt.setString(2, profile.getPhone());
+            stmt.setDate(3, profile.getDateOfBirth());
+            stmt.setString(4, profile.getGender() != null ? profile.getGender().toString() : null);
+            stmt.setString(5, profile.getUsername());
             stmt.executeUpdate();
         }
     }
+
+
+    public void delete(String username) throws SQLException {
+        String getUserIdSql = "SELECT id FROM \"User\" WHERE username = ?";
+        int userId = -1;
+
+        try (PreparedStatement getIdStmt = connection.prepareStatement(getUserIdSql)) {
+            getIdStmt.setString(1, username);
+            ResultSet rs = getIdStmt.executeQuery();
+            if (rs.next()) {
+                userId = rs.getInt("id");
+            }
+        }
+
+        if (userId != -1) {
+            // First delete from profile table
+            String deleteProfileSql = "DELETE FROM profile WHERE id = ?";
+            try (PreparedStatement deleteProfileStmt = connection.prepareStatement(deleteProfileSql)) {
+                deleteProfileStmt.setInt(1, userId);
+                deleteProfileStmt.executeUpdate();
+            }
+
+            // Then delete from User table
+            String deleteUserSql = "DELETE FROM \"User\" WHERE username = ?";
+            try (PreparedStatement deleteUserStmt = connection.prepareStatement(deleteUserSql)) {
+                deleteUserStmt.setString(1, username);
+                deleteUserStmt.executeUpdate();
+            }
+        }
+    }
+
 }
