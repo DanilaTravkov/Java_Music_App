@@ -1,5 +1,6 @@
 package view;
 
+import controller.ProfileController;
 import session.Session;
 
 import javax.swing.*;
