@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import view.MainView;
+import view.QwertyView;
 
 import javax.swing.*;
 
@@ -42,6 +43,7 @@ public class DatabaseConnectionTest {
             if (user != null) {
                 System.out.printf("Welcome %s", user.getUsername());
             } else {
+//                SwingUtilities.invokeLater(() -> { new QwertyView();}); // TODO: remove
                 System.out.println("Welcome, please log in");
 
                 System.out.println("Enter username: ");
@@ -52,19 +54,21 @@ public class DatabaseConnectionTest {
                 Profile profile = profileController.getProfile(loginUsername);
                 if (profile != null) {
                     if (Objects.equals(profile.getPassword(), loginPassword)) {
-                        User loggedInUser = new User(profile.getUsername(), profile.getPassword(), profile.getEmail());
+                        User loggedInUser = new User(profile.getUsername(), profile.getPassword(), profile.getEmail(), profile.getRole());
                         Session.getInstance().setLoggedInUser(loggedInUser);
 
                         System.out.printf("Welcome %s\n", loggedInUser.getUsername());
                         System.out.println("You are now logged in");
 
-                        System.out.println("Confirm to delete user y/n: ");
-                        String answer = scanner.nextLine();
-                        if (Objects.equals(answer, "y")) {
-                            profileController.deleteProfile(Session.getInstance().getLoggedInUser().getUsername());
-                        } else if (Objects.equals(answer, "n")) {
-                            System.out.println("Aborted");
-                        }
+                        SwingUtilities.invokeLater(() -> { new QwertyView();});
+
+//                        System.out.println("Confirm to delete user y/n: ");
+//                        String answer = scanner.nextLine();
+//                        if (Objects.equals(answer, "y")) {
+//                            profileController.deleteProfile(Session.getInstance().getLoggedInUser().getUsername());
+//                        } else if (Objects.equals(answer, "n")) {
+//                            System.out.println("Aborted");
+//                        }
 
 //                        System.out.println("Enter updated username: ");
 //                        String updatedUsername = scanner.nextLine();
@@ -81,10 +85,6 @@ public class DatabaseConnectionTest {
                 else {
                     System.out.println("Wrong username or password");
                 }
-
-
-
-//                SwingUtilities.invokeLater(() -> { new MainView(profileController);});
 
             }
 

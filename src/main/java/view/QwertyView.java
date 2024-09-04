@@ -1,5 +1,7 @@
 package view;
 
+import session.Session;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -96,7 +98,9 @@ public class QwertyView extends javax.swing.JFrame {
         artistsSidebarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                artistPlaceholder.setText(Session.getInstance().getLoggedInUser().getUsername());
                 cardLayout.show(cardPanel, "ARTISTS");
+
             }
         });
         bandsSidebarButton.addActionListener(new ActionListener() {

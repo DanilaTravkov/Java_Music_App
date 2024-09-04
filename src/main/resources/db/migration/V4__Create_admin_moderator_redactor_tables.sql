@@ -1,0 +1,6 @@
+CREATE TABLE Moderator (
+    id SERIAL PRIMARY KEY,
+    genre VARCHAR(20) NOT NULL
+);
+
+ALTER TABLE "User" ADD COLUMN role VARCHAR(20);

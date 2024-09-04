@@ -3,6 +3,7 @@ package repository;
 import model.Gender;
 import model.Profile;
 import model.User;
+import model.UserRoles;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,19 +44,20 @@ public class ProfileRepository {
     }
 
     public void create(User user) throws SQLException {
-        String insertUserSql = "INSERT INTO \"User\" (username, password, email) VALUES (?, ?, ?);";
+        String insertUserSql = "INSERT INTO \"User\" (username, password, email, role) VALUES (?, ?, ?, ?);";
 
         try (PreparedStatement userStmt = connection.prepareStatement(insertUserSql)) {
             userStmt.setString(1, user.getUsername());
             userStmt.setString(2, user.getPassword());
             userStmt.setString(3, user.getEmail());
+            userStmt.setString(4, UserRoles.GENERAL.name());
 
             userStmt.executeUpdate();
         }
     }
 
     public Profile get(String username) throws SQLException {
-        String sql = "SELECT u.username, u.password, u.email, p.phone, p.date_of_birth, p.gender " +
+        String sql = "SELECT u.username, u.password, u.email, u.role, p.phone, p.date_of_birth, p.gender " +
                 "FROM \"User\" u " +
                 "JOIN profile p ON u.id = p.id " +
                 "WHERE u.username = ?";
@@ -69,7 +71,9 @@ public class ProfileRepository {
                 String phone = rs.getString("phone");
                 Date dateOfBirth = rs.getDate("date_of_birth");
                 String genderString = rs.getString("gender");
+                String roleString = rs.getString("role");
                 Gender gender = null;
+                UserRoles role = null;
                 if (genderString != null) {
                     try {
                         gender = Gender.valueOf(genderString.toUpperCase());
@@ -77,8 +81,15 @@ public class ProfileRepository {
                         System.err.println("Invalid gender value: " + genderString);
                     }
                 }
+                if (roleString != null) {
+                    try {
+                        role = UserRoles.valueOf(roleString.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Invalid role value: " + roleString);
+                    }
+                }
 
-                return new Profile(usernameFromQuery, password, email, phone, dateOfBirth, gender);
+                return new Profile(usernameFromQuery, password, email, role, phone, dateOfBirth, gender);
             }
         }
         return null;
@@ -98,7 +109,9 @@ public class ProfileRepository {
                 String phone = rs.getString("phone");
                 Date dateOfBirth = rs.getDate("date_of_birth");
                 String genderString = rs.getString("gender");
+                String roleString = rs.getString("role");
                 Gender gender = null;
+                UserRoles role = null;
                 if (genderString != null) {
                     try {
                         gender = Gender.valueOf(genderString.toUpperCase());
@@ -106,8 +119,16 @@ public class ProfileRepository {
                         System.err.println("Invalid gender value: " + genderString);
                     }
                 }
+                if (roleString != null) {
+                    try {
+                        role = UserRoles.valueOf(roleString.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Invalid role value: " + roleString);
+                    }
+                }
 
-                Profile profile = new Profile(username, password, email, phone, dateOfBirth, gender);
+
+                Profile profile = new Profile(username, password, email, role, phone, dateOfBirth, gender);
                 profiles.add(profile);
             }
         }
@@ -122,10 +143,10 @@ public class ProfileRepository {
             stmt.setString(2, user.getEmail());
             stmt.setString(3, username);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int userId = rs.getInt(1);
-                // You might want to use this ID for further operations or validation
-            }
+//            if (rs.next()) {
+//                int userId = rs.getInt(1);
+//                // You might want to use this ID for further operations or validation
+//            }
         }
     }
 

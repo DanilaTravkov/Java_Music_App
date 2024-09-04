@@ -10,7 +10,6 @@ public class Profile extends User {
 
     @Id
     private int id;
-
     @Column(name = "name")
     private String name;
     @Column(name = "surname")
@@ -28,8 +27,8 @@ public class Profile extends User {
 
     public Profile() {}
 
-    public Profile(String username, String password, String email, String phone, Date dateOfBirth, Gender gender) {
-        super(username, password, email);
+    public Profile(String username, String password, String email, UserRoles role, String phone, Date dateOfBirth, Gender gender) {
+        super(username, password, email, role);
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
