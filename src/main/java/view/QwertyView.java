@@ -99,7 +99,6 @@ public class QwertyView extends javax.swing.JFrame {
         artistsSidebarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                artistPlaceholder.setText(Session.getInstance().getLoggedInUser().getUsername());
                 cardLayout.show(cardPanel, "ARTISTS");
 
             }
