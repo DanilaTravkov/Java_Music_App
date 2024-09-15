@@ -5,7 +5,7 @@ import javax.persistence.Id;
 
 public class Post {
     @Id
-    private String id;
+    private int id;
     @Column(name = "title")
     private String title;
     @Column(name = "image_url")
@@ -35,5 +35,13 @@ public class Post {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

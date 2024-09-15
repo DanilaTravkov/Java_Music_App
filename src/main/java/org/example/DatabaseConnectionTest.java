@@ -60,7 +60,7 @@ public class DatabaseConnectionTest {
                         System.out.printf("Welcome %s\n", loggedInUser.getUsername());
                         System.out.println("You are now logged in");
 
-                        SwingUtilities.invokeLater(() -> { new QwertyView();});
+//                        SwingUtilities.invokeLater(() -> { new QwertyView();});
 
 //                        System.out.println("Confirm to delete user y/n: ");
 //                        String answer = scanner.nextLine();
@@ -70,15 +70,15 @@ public class DatabaseConnectionTest {
 //                            System.out.println("Aborted");
 //                        }
 
-//                        System.out.println("Enter updated username: ");
-//                        String updatedUsername = scanner.nextLine();
-//                        System.out.println("Enter updated email: ");
-//                        String updatedEmail = scanner.nextLine();
-//
-//                        User updatedUser = new User(updatedUsername, null, updatedEmail);
-//
-//                        profileController.updateUser(updatedUser, Session.getInstance().getLoggedInUser().getUsername());
-//                        System.out.println("User updated successfully");
+                        System.out.println("Enter updated username: ");
+                        String updatedUsername = scanner.nextLine();
+                        System.out.println("Enter updated email: ");
+                        String updatedEmail = scanner.nextLine();
+
+                        User updatedUser = new User(updatedUsername, null, updatedEmail, null);
+
+                        profileController.updateUser(updatedUser, Session.getInstance().getLoggedInUser().getUsername());
+                        System.out.println("User updated successfully");
 
                     }
                 }

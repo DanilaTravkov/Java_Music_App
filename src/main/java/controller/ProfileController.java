@@ -21,7 +21,7 @@ public class ProfileController {
             return profileService.listProfiles();
         } catch (SQLException e) {
             e.printStackTrace();
-            return List.of(); // Return an empty list on error
+            return List.of();
         }
     }
 

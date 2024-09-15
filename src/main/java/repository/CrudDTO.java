@@ -1,13 +1,11 @@
 package repository;
 
-import model.Post;
-
 import java.util.List;
 
 public interface CrudDTO<T> {
     List<T> list();
-    T get();
-    void create();
-    void update();
-    void delete();
+    T get(int id);
+    void create(T newModel);
+    void update(T newModel, int id);
+    void delete(int id);
 }

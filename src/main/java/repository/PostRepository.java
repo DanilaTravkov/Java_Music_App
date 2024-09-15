@@ -37,7 +37,7 @@ public class PostRepository implements CrudDTO<Post> {
     }
 
     @Override
-    public Post get() {
+    public Post get(int id) {
         Post post = null;
         String sql = "SELECT * FROM Post WHERE id = ?";
 
@@ -59,7 +59,7 @@ public class PostRepository implements CrudDTO<Post> {
     }
 
     @Override
-    public void create() {
+    public void create(Post post) {
         String sql = "INSERT INTO Post (title, image_url) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -72,13 +72,13 @@ public class PostRepository implements CrudDTO<Post> {
     }
 
     @Override
-    public void update() {
+    public void update(Post post, int id) {
         String sql = "UPDATE Post SET title = ?, image_url = ? WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, post.getTitle());
             stmt.setString(2, post.getImageUrl());
-            stmt.setInt(3, post.getId());
+            stmt.setInt(3, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,7 +86,7 @@ public class PostRepository implements CrudDTO<Post> {
     }
 
     @Override
-    public void delete() {
+    public void delete(int id) {
         String sql = "DELETE FROM Post WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -95,6 +95,5 @@ public class PostRepository implements CrudDTO<Post> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
     }
 }
