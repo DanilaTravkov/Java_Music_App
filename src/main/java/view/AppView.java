@@ -7,23 +7,16 @@ import model.Profile;
 import model.User;
 import session.Session;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -47,7 +40,7 @@ public class AppView extends javax.swing.JFrame {
     private JTextField emailField;
     private JTextField phoneNumberField;
     private JTextField usernameField;
-    private JPasswordField passwordField1;
+    private JPasswordField registerPasswordField;
     private JComboBox genderBox;
     private JLabel nameFieldLabel;
     private JLabel surnameFieldLabel;
@@ -97,6 +90,24 @@ public class AppView extends javax.swing.JFrame {
     private JLabel profileEmailLabel;
     private JLabel pageLabel;
     private JLabel appNameLabel;
+    private JPanel albumPanel;
+    private JPanel artistPanel;
+    private JPanel bandPanel;
+    private JLabel artistPageImage;
+    private JLabel artistNicknameLabel;
+    private JLabel artistNameSurnameDateLabel;
+    private JTextPane artistDescriptionTextPane;
+    private JLabel bandPageLogo;
+    private JLabel bandPageNameLabel;
+    private JLabel bandPageGenreLabel;
+    private JLabel bandPageCountryLabel;
+    private JLabel bandPageDatesLabel;
+    private JLabel albumPageImage;
+    private JLabel albumPageTitleLabel;
+    private JLabel albumPageDateLabel;
+    private JLabel albumPageGenreLabel;
+    private JTextPane albumPageDescriptionPane;
+    private JTextPane bandPageDescription;
 
     public AppView(Connection connection, ProfileController profileController, BandController bandController) {
 
@@ -304,7 +315,7 @@ public class AppView extends javax.swing.JFrame {
                 String createProfileSQL = "INSERT INTO Profile (name, surname, phone, gender) VALUES (?, ?, ?, ?);";
                 try (PreparedStatement userStmt = connection.prepareStatement(createUserSQL)) {
                     userStmt.setString(1, usernameField.getText());
-                    userStmt.setString(2, passwordField1.getText());
+                    userStmt.setString(2, registerPasswordField.getText());
                     userStmt.setString(3, emailField.getText());
                     userStmt.executeUpdate();
                     try (PreparedStatement profileStmt = connection.prepareStatement(createProfileSQL)) {
@@ -320,70 +331,129 @@ public class AppView extends javax.swing.JFrame {
                 }
             }
         });
+
+        albumLogo1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Album Name");
+                cardLayout.show(cardPanel, "ALBUM");
+            }
+        });
+        albumLogo2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Album Name");
+                cardLayout.show(cardPanel, "ALBUM");
+            }
+        });
+        albumLogo3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Album Name");
+                cardLayout.show(cardPanel, "ALBUM");
+            }
+        });
+        albumLogo4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Album Name");
+                cardLayout.show(cardPanel, "ALBUM");
+            }
+        });
+        artistIcon1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Artist Name");
+                cardLayout.show(cardPanel, "ARTIST");
+            }
+        });
+        artistIcon2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Artist Name");
+                cardLayout.show(cardPanel, "ARTIST");
+            }
+        });
+        artistImage3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Artist Name");
+                cardLayout.show(cardPanel, "ARTIST");
+            }
+        });
+        artistImage4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Artist Name");
+                cardLayout.show(cardPanel, "ARTIST");
+            }
+        });
+        bandImage1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Band Name");
+                cardLayout.show(cardPanel, "BAND");
+            }
+        });
+        bandImage2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Band Name");
+                cardLayout.show(cardPanel, "BAND");
+            }
+        });
     }
 
     private void createUIComponents() {
-        artistIcon1 = new JLabel();
-        artistIcon2 = new JLabel();
-        artistImage4 = new JLabel();
-        artistImage3 = new JLabel();
-        albumLogo1 = new JLabel();
-        albumLogo2 = new JLabel();
-        albumLogo3 = new JLabel();
-        albumLogo4 = new JLabel();
-        bandImage1 = new JLabel();
-        bandImage2 = new JLabel();
-        createPrikol(artistIcon1, "/imgs/tehnik.jpg");
-        createPrikol(artistIcon2, "/imgs/zemfira.jpg");
-        createPrikol(artistImage4, "/imgs/drake.jpg");
-        createPrikol(artistImage3, "/imgs/krug.jpg");
-        createPrikol(albumLogo1, "/imgs/krugAlbum.png");
-        createPrikol(albumLogo2, "/imgs/zemfiraAlbum.jpg");
-        createPrikol(albumLogo3, "/imgs/drakeAlbum.jpg");
-        createPrikol(albumLogo4, "/imgs/tehnikAlbum.jpg");
-        createPrikol(bandImage1, "/imgs/gillianCarter.jpeg");
-        createPrikol(bandImage2, "/imgs/nirvana.jpg");
+        artistIcon1 = new JLabel();     setLabelIcon(artistIcon1, roundIcon("/imgs/tehnik.jpg", 350, 350, 50, 50));
+        artistIcon2 = new JLabel();     setLabelIcon(artistIcon2, roundIcon("/imgs/zemfira.jpg", 350, 350, 50, 50));
+        artistImage4 = new JLabel();    setLabelIcon(artistImage4, roundIcon("/imgs/drake.jpg", 350, 350, 50, 50));
+        artistImage3 = new JLabel();    setLabelIcon(artistImage3, roundIcon("/imgs/krug.jpg", 350, 350, 50, 50));
+        albumLogo1 = new JLabel();      setLabelIcon(albumLogo1, roundIcon("/imgs/krugAlbum.png", 350, 350, 50, 50));
+        albumLogo2 = new JLabel();      setLabelIcon(albumLogo2, roundIcon("/imgs/zemfiraAlbum.jpg", 350, 350, 50, 50));
+        albumLogo3 = new JLabel();      setLabelIcon(albumLogo3, roundIcon("/imgs/drakeAlbum.jpg", 350, 350, 50, 50));
+        albumLogo4 = new JLabel();      setLabelIcon(albumLogo4, roundIcon("/imgs/tehnikAlbum.jpg", 350, 350, 50, 50));
+        bandImage1 = new JLabel();      setLabelIcon(bandImage1, roundIcon("/imgs/gillianCarter.jpeg", 350, 350, 50, 50));
+        bandImage2 = new JLabel();      setLabelIcon(bandImage2, roundIcon("/imgs/nirvana.jpg", 350, 350, 50, 50));
+        artistPageImage = new JLabel(); setLabelIcon(artistPageImage, roundIcon("/imgs/krug.jpg", 350, 350, 350, 350));
+        bandPageLogo = new JLabel();    setLabelIcon(bandPageLogo, roundIcon("/imgs/nirvana.jpg", 350, 350, 350, 350));
+        albumPageImage = new JLabel();  setLabelIcon(albumPageImage, roundIcon("/imgs/krugAlbum.png", 350, 350, 50, 50));
+
     }
 
-    private void createPrikol(JLabel label, String imageName){
+    private void setLabelIcon(JLabel label, ImageIcon icon){
+        label.setIcon(icon);
+        label.setHorizontalTextPosition(SwingConstants.CENTER);
+        label.setVerticalTextPosition(SwingConstants.BOTTOM);
+        label.setIconTextGap(5);
+        label.setBorder(new EmptyBorder(5, 5, 5, 5));
+    }
+
+    private ImageIcon roundIcon(String imageName, int width, int height, int arcWidth, int arcHeight){
         // Load the image from the classpath
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(imageName));
         Image originalImage = originalIcon.getImage();
 
-        // Define the size for the label (adjust to your needs)
-        int labelWidth = 350;  // You can dynamically adjust this based on label size
-        int labelHeight = 350;
-
         // Create a BufferedImage to draw the rounded corners
-        BufferedImage roundedImage = new BufferedImage(labelWidth, labelHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage roundedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = roundedImage.createGraphics();
 
         // Enable anti-aliasing for better quality
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Define the rounded rectangle shape
-        int arcWidth = 50;  // Adjust for the roundness of the corners
-        int arcHeight = 50;
-        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Double(0, 0, labelWidth, labelHeight, arcWidth, arcHeight);
+        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Double(0, 0, width, height, arcWidth, arcHeight);
 
         // Clip the image to the rounded rectangle
         g2d.setClip(roundedRectangle);
 
         // Draw the original image onto the clipped area
-        g2d.drawImage(originalImage, 0, 0, labelWidth, labelHeight, null);
+        g2d.drawImage(originalImage, 0, 0, width, height, null);
 
         // Dispose the graphics object to free up resources
         g2d.dispose();
 
         // Set the rounded image as an icon for the label
         ImageIcon roundedIcon = new ImageIcon(roundedImage);
-        label.setIcon(roundedIcon);
-        label.setHorizontalTextPosition(SwingConstants.CENTER);
-        label.setVerticalTextPosition(SwingConstants.BOTTOM);
-//        label.setBackground(Color.WHITE);       // Set the background color
-//        label.setOpaque(true);                  // Make the label opaque to show the background color
-        label.setIconTextGap(5);
-        label.setBorder(new EmptyBorder(5, 5, 5, 5));
-//    label.setFont(new Font("Times New Roman", Font.PLAIN, 20))
+        return roundedIcon;
     }
 }
