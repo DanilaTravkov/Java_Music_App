@@ -18,7 +18,7 @@ public class ProfileRepository {
     }
 
     public void create(User user, Profile profile) throws SQLException {
-        String insertUserSql = "INSERT INTO \"User\" (username, password, email) VALUES (?, ?);";
+        String insertUserSql = "INSERT INTO \"User\" (username, password, email) VALUES (?, ?, ?);";
         String insertProfileSql = "INSERT INTO profile (id, name, surname, date_of_birth, phone, gender) VALUES (?, ?, ?, ?, ?, ?);";
 
         try (PreparedStatement userStmt = connection.prepareStatement(insertUserSql)) {

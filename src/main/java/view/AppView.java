@@ -5,6 +5,7 @@ import controller.ProfileController;
 import model.Band;
 import model.Profile;
 import model.User;
+import model.UserRoles;
 import session.Session;
 
 import javax.swing.*;
@@ -12,9 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -293,29 +293,51 @@ public class AppView extends javax.swing.JFrame {
                 searchField.setText("Search...");
             }
         });
+
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String createUserSQL = "INSERT INTO \"User\" (username, password, email) VALUES (?, ?, ?);";
-                String createProfileSQL = "INSERT INTO Profile (name, surname, phone, gender) VALUES (?, ?, ?);";
-                try (PreparedStatement userStmt = connection.prepareStatement(createUserSQL)) {
-                    userStmt.setString(1, String.valueOf(usernamefieldLabel));
-                    userStmt.setString(2, String.valueOf(passwordField1));
-                    userStmt.setString(3, String.valueOf(emailField));
+                String createUserSQL = "INSERT INTO \"User\" (username, password, email, role) VALUES (?, ?, ?, ?);";
+                String updateProfileSQL = "UPDATE Profile SET name = ?, surname = ?, phone = ?, gender = ? WHERE id = ?;";
+
+                try (PreparedStatement userStmt = connection.prepareStatement(createUserSQL, Statement.RETURN_GENERATED_KEYS)) {
+                    userStmt.setString(1, usernameField.getText());
+                    userStmt.setString(2, new String(passwordField1.getPassword()));  // For password field
+                    userStmt.setString(3, emailField.getText());
+                    userStmt.setString(4, UserRoles.GENERAL.toString());
+
+                    // Execute the user insert
                     userStmt.executeUpdate();
-                    try (PreparedStatement profileStmt = connection.prepareStatement(createProfileSQL)) {
-                        profileStmt.setString(1, String.valueOf(nameField));
-                        profileStmt.setString(2, String.valueOf(surnameField));
-                        profileStmt.setString(3, String.valueOf(phoneNumberField));
-                        profileStmt.setString(4, String.valueOf(genderBox));
-                        profileStmt.executeUpdate();
+
+                    // Get the generated user ID
+                    ResultSet generatedKeys = userStmt.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int userId = generatedKeys.getInt(1); // Assuming the ID is the first column in the result
+                        System.out.println("Generated userId: " + userId); // Log the userId for debugging
+
+                        // Now, update the Profile with user-provided data
+                        try (PreparedStatement profileStmt = connection.prepareStatement(updateProfileSQL)) {
+                            profileStmt.setString(1, nameField.getText());
+                            profileStmt.setString(2, surnameField.getText());
+                            profileStmt.setString(3, phoneNumberField.getText());
+                            profileStmt.setString(4, genderBox.getSelectedItem().toString());
+                            profileStmt.setInt(5, userId);  // Use the same userId to update Profile
+
+                            // Execute the profile update
+                            int profileUpdate = profileStmt.executeUpdate();
+                            if (profileUpdate > 0) {
+                                System.out.println("Profile updated for userId: " + userId); // Debugging log
+                                pageLabel.setText("User and profile updated successfully!");
+                            }
+                        }
                     }
-                    pageLabel.setText("User created!");
                 } catch (SQLException exc) {
                     exc.printStackTrace();
                 }
             }
         });
+
+
     }
 
     private void createUIComponents() {
