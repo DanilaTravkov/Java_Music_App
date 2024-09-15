@@ -320,7 +320,7 @@ public class AppView extends javax.swing.JFrame {
 
                 try (PreparedStatement userStmt = connection.prepareStatement(createUserSQL, Statement.RETURN_GENERATED_KEYS)) {
                     userStmt.setString(1, usernameField.getText());
-                    userStmt.setString(2, new String(passwordField1.getPassword()));  // For password field
+                    userStmt.setString(2, new String(registerPasswordField.getPassword()));  // For password field
                     userStmt.setString(3, emailField.getText());
                     userStmt.setString(4, UserRoles.GENERAL.toString());
 
@@ -380,6 +380,7 @@ public class AppView extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 pageLabel.setText("Album Name");
                 cardLayout.show(cardPanel, "ALBUM");
+
             }
         });
         artistIcon1.addMouseListener(new MouseAdapter() {
