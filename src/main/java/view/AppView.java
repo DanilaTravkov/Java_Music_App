@@ -7,11 +7,15 @@ import model.Profile;
 import model.User;
 import session.Session;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -297,17 +301,17 @@ public class AppView extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String createUserSQL = "INSERT INTO \"User\" (username, password, email) VALUES (?, ?, ?);";
-                String createProfileSQL = "INSERT INTO Profile (name, surname, phone, gender) VALUES (?, ?, ?);";
+                String createProfileSQL = "INSERT INTO Profile (name, surname, phone, gender) VALUES (?, ?, ?, ?);";
                 try (PreparedStatement userStmt = connection.prepareStatement(createUserSQL)) {
-                    userStmt.setString(1, String.valueOf(usernamefieldLabel));
-                    userStmt.setString(2, String.valueOf(passwordField1));
-                    userStmt.setString(3, String.valueOf(emailField));
+                    userStmt.setString(1, usernameField.getText());
+                    userStmt.setString(2, passwordField1.getText());
+                    userStmt.setString(3, emailField.getText());
                     userStmt.executeUpdate();
                     try (PreparedStatement profileStmt = connection.prepareStatement(createProfileSQL)) {
-                        profileStmt.setString(1, String.valueOf(nameField));
-                        profileStmt.setString(2, String.valueOf(surnameField));
-                        profileStmt.setString(3, String.valueOf(phoneNumberField));
-                        profileStmt.setString(4, String.valueOf(genderBox));
+                        profileStmt.setString(1, nameField.getText());
+                        profileStmt.setString(2, surnameField.getText());
+                        profileStmt.setString(3, phoneNumberField.getText());
+                        profileStmt.setString(4, genderBox.getSelectedItem().toString());
                         profileStmt.executeUpdate();
                     }
                     pageLabel.setText("User created!");
