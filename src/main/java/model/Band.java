@@ -9,6 +9,7 @@ public class Band {
     private String country;
     private Date dateCreated;
     private Date dateDisbanded;
+    private String imgLink;
 
     public String getName() {
         return name;
@@ -56,5 +57,13 @@ public class Band {
 
     public void setDateDisbanded(Date dateDisbanded) {
         this.dateDisbanded = dateDisbanded;
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
     }
 }
