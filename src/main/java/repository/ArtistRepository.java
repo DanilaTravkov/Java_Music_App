@@ -52,7 +52,7 @@ public class ArtistRepository implements CrudDTO<Artist> {
                 artist.setSurname(rs.getString("surname"));
                 artist.setDateOfBirth(rs.getDate("date_of_birth"));
                 artist.setDateOfDeath(rs.getDate("date_of_death"));
-                artist.setImgLink(rs.getString("img_link"));
+//                artist.setImgLink(rs.getString("img_link"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
