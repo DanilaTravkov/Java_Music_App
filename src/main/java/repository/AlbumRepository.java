@@ -45,8 +45,8 @@ public class AlbumRepository implements CrudDTO<Album> {
                 if (rs.next()) {
                     album = new Album();
                     album.setName(rs.getString("name"));
-                    album.setDate(rs.getDate("date"));
-                    album.setImgLink(rs.getString("imgLink"));
+                    album.setDate(rs.getDate("date_released"));
+//                    album.setImgLink(rs.getString("imgLink"));
                 }
             }
         } catch (SQLException e) {

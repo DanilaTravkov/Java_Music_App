@@ -1,11 +1,10 @@
 package view;
 
+import controller.AlbumController;
+import controller.ArtistController;
 import controller.BandController;
 import controller.ProfileController;
-import model.Band;
-import model.Profile;
-import model.User;
-import model.UserRoles;
+import model.*;
 import session.Session;
 
 import javax.swing.*;
@@ -99,7 +98,6 @@ public class AppView extends javax.swing.JFrame {
     private JLabel artistPageImage;
     private JLabel artistNicknameLabel;
     private JLabel artistNameSurnameDateLabel;
-    private JTextPane artistDescriptionTextPane;
     private JLabel bandPageLogo;
     private JLabel bandPageNameLabel;
     private JLabel bandPageGenreLabel;
@@ -108,11 +106,9 @@ public class AppView extends javax.swing.JFrame {
     private JLabel albumPageImage;
     private JLabel albumPageTitleLabel;
     private JLabel albumPageDateLabel;
-    private JLabel albumPageGenreLabel;
-    private JTextPane albumPageDescriptionPane;
     private JTextPane bandPageDescription;
 
-    public AppView(Connection connection, ProfileController profileController, BandController bandController) {
+    public AppView(Connection connection, ProfileController profileController, BandController bandController, AlbumController albumController, ArtistController artistController) {
 
         this.setTitle("Music App Number One");
         this.setLocationRelativeTo(null);
@@ -357,28 +353,44 @@ public class AppView extends javax.swing.JFrame {
         albumLogo1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Album Name");
+                pageLabel.setText("Album");
+                Album album = albumController.getAlbum(3);
+                setLabelIcon(albumPageImage, roundIcon("/imgs/krugAlbum.png", 350, 350, 50, 50));
+                albumPageDateLabel.setText(album.getDate().toString());
+                albumPageTitleLabel.setText(album.getName());
                 cardLayout.show(cardPanel, "ALBUM");
             }
         });
         albumLogo2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Album Name");
+                pageLabel.setText("Album");
+                Album album = albumController.getAlbum(4);
+                setLabelIcon(albumPageImage, roundIcon("/imgs/zemfiraAlbum.jpg", 350, 350, 50, 50));
+                albumPageDateLabel.setText(album.getDate().toString());
+                albumPageTitleLabel.setText(album.getName());
                 cardLayout.show(cardPanel, "ALBUM");
             }
         });
         albumLogo3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Album Name");
+                pageLabel.setText("Album");
+                Album album = albumController.getAlbum(1);
+                setLabelIcon(albumPageImage, roundIcon("/imgs/drakeAlbum.jpg", 350, 350, 50, 50));
+                albumPageDateLabel.setText(album.getDate().toString());
+                albumPageTitleLabel.setText(album.getName());
                 cardLayout.show(cardPanel, "ALBUM");
             }
         });
         albumLogo4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Album Name");
+                pageLabel.setText("Album");
+                Album album = albumController.getAlbum(5);
+                setLabelIcon(albumPageImage, roundIcon("/imgs/tehnikAlbum.jpg", 350, 350, 50, 50));
+                albumPageDateLabel.setText(album.getDate().toString());
+                albumPageTitleLabel.setText(album.getName());
                 cardLayout.show(cardPanel, "ALBUM");
 
             }
@@ -386,34 +398,51 @@ public class AppView extends javax.swing.JFrame {
         artistIcon1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Artist Name");
+                pageLabel.setText("Artist");
+                Artist artist = artistController.getArtist(2);
+                setLabelIcon(artistPageImage, roundIcon("/imgs/tehnik.jpg", 350, 350, 350, 350));
+                artistNicknameLabel.setText(artist.getNickname());
+                artistNameSurnameDateLabel.setText(artist.getName() + " " + artist.getSurname() + ", " + artist.getDateOfBirth() + " - " + artist.getDateOfDeath());
                 cardLayout.show(cardPanel, "ARTIST");
             }
         });
         artistIcon2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Artist Name");
+                pageLabel.setText("Artist");
+                Artist artist = artistController.getArtist(3);
+                setLabelIcon(artistPageImage, roundIcon("/imgs/zemfira.jpg", 350, 350, 350, 350));
+                artistNicknameLabel.setText(artist.getNickname());
+                artistNameSurnameDateLabel.setText(artist.getName() + " " + artist.getSurname() + ", " + artist.getDateOfBirth() + " - " + artist.getDateOfDeath());
                 cardLayout.show(cardPanel, "ARTIST");
             }
         });
         artistImage3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Artist Name");
+                pageLabel.setText("Artist");
+                Artist artist = artistController.getArtist(1);
+                setLabelIcon(artistPageImage, roundIcon("/imgs/krug.jpg", 350, 350, 350, 350));
+                artistNicknameLabel.setText(artist.getNickname());
+                artistNameSurnameDateLabel.setText(artist.getName() + " " + artist.getSurname() + ", " + artist.getDateOfBirth() + " - " + artist.getDateOfDeath());
                 cardLayout.show(cardPanel, "ARTIST");
             }
         });
         artistImage4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Artist Name");
+                pageLabel.setText("Artist");
+                Artist artist = artistController.getArtist(4);
+                setLabelIcon(artistPageImage, roundIcon("/imgs/drake.jpg", 350, 350, 350, 350));
+                artistNicknameLabel.setText(artist.getNickname());
+                artistNameSurnameDateLabel.setText(artist.getName() + " " + artist.getSurname() + ", " + artist.getDateOfBirth() + " - " + artist.getDateOfDeath());
                 cardLayout.show(cardPanel, "ARTIST");
             }
         });
         bandImage1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Band");
                 Band band = bandController.getBand(2);
                 pageLabel.setText(band.getName());
                 bandPageNameLabel.setText(band.getName());
@@ -429,6 +458,7 @@ public class AppView extends javax.swing.JFrame {
         bandImage2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                pageLabel.setText("Band");
                 Band band = bandController.getBand(1);
                 pageLabel.setText(band.getName());
                 bandPageNameLabel.setText(band.getName());

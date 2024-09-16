@@ -1,6 +1,8 @@
 package org.example;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatNightOwlIJTheme;
+import controller.AlbumController;
+import controller.ArtistController;
 import controller.BandController;
 import controller.ProfileController;
 
@@ -9,6 +11,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Album;
 import view.AppView;
 
 public class AppLauncher {
@@ -31,9 +34,11 @@ public class AppLauncher {
             System.out.println("Connection successful!");
             ProfileController profileController = new ProfileController(connection); // Profile controller instance
             BandController bandController = new BandController(connection);
+            ArtistController artistController = new ArtistController(connection);
+            AlbumController albumController = new AlbumController(connection);
             setUIFont(new Font("Arial", Font.PLAIN, 14));
             setUILF();
-            new AppView(connection, profileController, bandController);
+            new AppView(connection, profileController, bandController, albumController, artistController);
 
         } catch (SQLException e) {
             System.out.println(System.getenv("DB_HOST"));
