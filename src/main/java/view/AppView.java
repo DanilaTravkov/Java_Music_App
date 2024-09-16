@@ -414,14 +414,30 @@ public class AppView extends javax.swing.JFrame {
         bandImage1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Band Name");
+                Band band = bandController.getBand(2);
+                pageLabel.setText(band.getName());
+                bandPageNameLabel.setText(band.getName());
+                bandPageCountryLabel.setText(band.getCountry());
+                bandPageDatesLabel.setText(band.getDateCreated().toString() + " - " + band.getDateDisbanded());
+                bandPageDescription.setText(band.getDescription());
+                bandPageGenreLabel.setText(band.getGenre().toString());
+//                String imgPath = band.getImage();
+                setLabelIcon(bandPageLogo, roundIcon("/imgs/gillianCarter.jpeg", 350, 350, 50, 50));
                 cardLayout.show(cardPanel, "BAND");
             }
         });
         bandImage2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageLabel.setText("Band Name");
+                Band band = bandController.getBand(1);
+                pageLabel.setText(band.getName());
+                bandPageNameLabel.setText(band.getName());
+                bandPageCountryLabel.setText(band.getCountry());
+                bandPageDatesLabel.setText(band.getDateCreated().toString() + " - " + band.getDateDisbanded());
+                bandPageDescription.setText(band.getDescription());
+                bandPageGenreLabel.setText(band.getGenre().toString());
+//                String imgPath = band.getImage();
+                setLabelIcon(bandPageLogo, roundIcon("/imgs/nirvana.jpg", 350, 350, 50, 50));
                 cardLayout.show(cardPanel, "BAND");
             }
         });
